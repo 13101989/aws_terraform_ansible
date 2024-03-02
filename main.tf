@@ -18,7 +18,7 @@ terraform {
   }
 
   cloud {
-    organization = "skillab-ansible"
+    organization = "my-skillab"
 
     workspaces {
       name = "ansible"
