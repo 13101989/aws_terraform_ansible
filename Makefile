@@ -20,19 +20,7 @@ env-up:
 	printf "[nodes]\n" > inventory
 	terraform output -raw wordpress_public_ip >> inventory
 	printf "#!/bin/sh\n\n" > scp-ansible-config.sh
-	printf "scp -q -o StrictHostKeyChecking=no -i ec2-user-private-key.pem ansible.cfg ec2-user@" >> scp-ansible-config.sh
-	terraform output -raw ansible_public_ip >> scp-ansible-config.sh
-	printf ":/home/ec2-user/\n" >> scp-ansible-config.sh
-	printf "scp -q -i ec2-user-private-key.pem ansible-private-key.pem ec2-user@" >> scp-ansible-config.sh
-	terraform output -raw ansible_public_ip >> scp-ansible-config.sh
-	printf ":/home/ec2-user/\n" >> scp-ansible-config.sh
-	printf "scp -q -i ec2-user-private-key.pem wp-config.php.j2 ec2-user@" >> scp-ansible-config.sh
-	terraform output -raw ansible_public_ip >> scp-ansible-config.sh
-	printf ":/home/ec2-user/\n" >> scp-ansible-config.sh
-	printf "scp -q -i ec2-user-private-key.pem inventory ec2-user@" >> scp-ansible-config.sh
-	terraform output -raw ansible_public_ip >> scp-ansible-config.sh
-	printf ":/home/ec2-user/\n" >> scp-ansible-config.sh
-	printf "scp -q -i ec2-user-private-key.pem playbook.yml ec2-user@" >> scp-ansible-config.sh
+	printf "scp -q -o StrictHostKeyChecking=no -i ec2-user-private-key.pem ansible-private-key.pem ansible.cfg inventory playbook.yml wordpress.yml wp-config.php.j2 ec2-user@" >> scp-ansible-config.sh
 	terraform output -raw ansible_public_ip >> scp-ansible-config.sh
 	printf ":/home/ec2-user/\n" >> scp-ansible-config.sh
 	chmod 750 scp-ansible-config.sh
