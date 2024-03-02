@@ -26,12 +26,14 @@ env-up:
 	chmod 750 scp-ansible-config.sh
 	./scp-ansible-config.sh
 
-clean-env-files:
-	rm -rf ec2-user-private-key.pem ansible-private-key.pem ansible.cfg inventory ssh.sh scp-ansible-config.sh
-
 env-down:
 	terraform destroy --auto-approve
 	make clean-env-files
+	make clean-terraform-files
+
+clean-env-files:
+	rm -rf ec2-user-private-key.pem ansible-private-key.pem ansible.cfg inventory ssh.sh scp-ansible-config.sh
 
 clean-terraform-files:
+	rm -rf terraform
 	rm -rf .terraform.lock.hcl
