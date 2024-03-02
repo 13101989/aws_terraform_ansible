@@ -145,7 +145,26 @@ resource "aws_instance" "aws_ec2_wordpress" {
     Name = "WordPress-Instance"
   }
 }
-# Output the public DNS of the ansible ec2 instance
+# Output the public DNS of the wordpress ec2 instance
 output "wordpress_public_ip" {
   value = aws_instance.aws_ec2_wordpress.public_ip
 }
+
+
+# Create an EBS volume for the WordPress instance
+resource "aws_ebs_volume" "ebs" {
+  availability_zone = aws_instance.aws_ec2_wordpress.availability_zone
+  size              = 4
+  tags = {
+    Name = "Data"
+  }
+}
+# Attach volume to wordpress instance
+resource "aws_volume_attachment" "ebs_att" {
+  device_name = "/dev/sdh"
+  volume_id   = aws_ebs_volume.ebs.id
+  instance_id = aws_instance.aws_ec2_wordpress.id
+  force_detach = true
+}
+
+
