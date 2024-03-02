@@ -3,7 +3,7 @@
   hosts: all
   become: yes
   vars:
-    mysql_root_password: "your_root_password"
+    mysql_root_password: "root"  # sudo mysql_secure_installation on wordpress instance before
     wordpress_db_name: "wordpress"
     wordpress_db_user: "wordpressuser"
     wordpress_db_password: "your_db_password"
@@ -51,10 +51,15 @@
         state: started
         enabled: yes
 
-    - name: Install MySQL Python module
+    - name: Install pip3
       package:
-        name: python3-pymysql
+        name: python3-pip
         state: present
+
+    - name: Install MySQL Python module
+      pip:
+        name: pymysql
+        executable: pip3
 
     - name: Secure MariaDB installation
       mysql_user:
@@ -82,14 +87,13 @@
         login_user: root
         login_password: "{{ mysql_root_password }}"
 
-    - name: Download and extract WordPress
+    - name: Download WordPress
       get_url:
         url: "https://wordpress.org/latest.tar.gz"
         dest: "/tmp/wordpress.tar.gz"
-      delegate_to: localhost
 
     - name: Extract WordPress archive
-      ansible.builtin.archive:
+      ansible.builtin.unarchive:
         src: "/tmp/wordpress.tar.gz"
         dest: "/var/www/html"
         remote_src: yes
