@@ -30,7 +30,7 @@ env-up:
 	terraform output -raw wordpress_public_ip >> inventory
 
 	printf "#!/bin/sh\n\n" > scp-ansible-config.sh
-	printf "scp -q -o StrictHostKeyChecking=no -i ansible-to-wordpress-private-key.pem ssh-to-wordpress.sh ansible.cfg inventory ./playbooks/* ec2-user@" >> scp-ansible-config.sh
+	printf "scp -q -o StrictHostKeyChecking=no -i user-to-ansible-private-key.pem ansible-to-wordpress-private-key.pem ssh-to-wordpress.sh ansible.cfg inventory ./playbooks/* ec2-user@" >> scp-ansible-config.sh
 	terraform output -raw ansible_public_ip >> scp-ansible-config.sh
 	printf ":/home/ec2-user/\n" >> scp-ansible-config.sh
 	chmod 750 scp-ansible-config.sh
