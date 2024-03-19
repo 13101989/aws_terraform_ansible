@@ -71,6 +71,11 @@
         check_implicit_admin: yes
         state: present
 
+    - name: Change root password for MariaDB
+      ansible.builtin.command:
+        cmd: mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '{{ mysql_root_password }}';"
+      become: true
+
     - name: Create WordPress database
       mysql_db:
         name: "{{ wordpress_db_name }}"
