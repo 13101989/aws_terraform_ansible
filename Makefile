@@ -19,8 +19,8 @@ env-up:
 	chmod 750 ssh-to-ansible.sh
 
 	printf "#!/bin/sh\n\n" > ssh-to-wordpress.sh
-	printf "ssh -i user-to-ansible-private-key.pem ec2-user@" >> ssh-to-wordpress.sh
-	terraform output -raw ansible_public_ip >> ssh-to-wordpress.sh
+	printf "ssh -i ansible-to-wordpress-private-key.pem ec2-user@" >> ssh-to-wordpress.sh
+	terraform output -raw wordpress_public_ip >> ssh-to-wordpress.sh
 	chmod 750 ssh-to-wordpress.sh
 
 	printf "[defaults]\ninventory = inventory\n" > ansible.cfg
@@ -28,7 +28,7 @@ env-up:
 
 	printf "[nodes]\n" > inventory
 	terraform output -raw wordpress_public_ip >> inventory
-	
+
 	printf "#!/bin/sh\n\n" > scp-ansible-config.sh
 	printf "scp -q -o StrictHostKeyChecking=no -i ansible-to-wordpress-private-key.pem ssh-to-wordpress.sh ansible.cfg inventory ./playbooks/* ec2-user@" >> scp-ansible-config.sh
 	terraform output -raw ansible_public_ip >> scp-ansible-config.sh
