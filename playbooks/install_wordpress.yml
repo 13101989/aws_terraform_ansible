@@ -61,10 +61,10 @@
         name: pymysql
         executable: pip3
 
-    # - name: Change root password for MariaDB
-    #   ansible.builtin.command:
-    #     cmd: mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '{{ mysql_root_password }}';"
-    #   become: true
+    - name: Add a root password for MariaDB
+      ansible.builtin.command:
+        cmd: mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';"
+      become: true
 
     - name: Create WordPress database
       mysql_db:
