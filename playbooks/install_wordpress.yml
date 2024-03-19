@@ -61,43 +61,26 @@
         name: pymysql
         executable: pip3
 
-    - name: Switch to unix_socket authentication
-      command: mysql -u root -p"{{ mysql_root_password }}" -e "UPDATE mysql.user SET plugin = 'unix_socket' WHERE User = 'root';"
-      become: true
+    - name: Install pexpect Python module
+      pip:
+        name: pexpect
+        executable: pip3
 
-    - name: Remove anonymous users
-      mysql_user:
-        name: ''
-        host_all: yes
-        state: absent
+    - name: secure mariadb installation
       become: true
+      expect:
+        command: mysql_secure_installation
+        responses:
+          'Enter current password for root': ''
+          'Set root password': 'n'
+          'Remove anonymous users': 'y'
+          'Disallow root login remotely': 'y'
+          'Remove test database': 'y'
+          'Reload privilege tables now': 'y'
+        timeout: 1
+      register: secure_mariadb
+      failed_when: "'... Failed!' in secure_mariadb.stdout_lines"
 
-    - name: Disallow root login remotely
-      mysql_user:
-        name: root
-        host_all: yes
-        state: absent
-      become: true
-
-    - name: Remove test database
-      mysql_db:
-        name: test
-        state: absent
-      become: true
-
-    - name: Change root password for MariaDB
-      mysql_user:
-        login_user: root
-        login_password: "{{ mysql_root_password }}"
-        user: root
-        password: "{{ mysql_root_password }}"
-        host_all: yes
-        check_implicit_admin: yes
-        state: present
-
-    - name: Reload privilege tables
-      command: mysql -u root -p"{{ mysql_root_password }}" -e "FLUSH PRIVILEGES;"
-      become: true
 
     - name: Create WordPress database
       mysql_db:
