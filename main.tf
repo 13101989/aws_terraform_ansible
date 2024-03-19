@@ -56,7 +56,7 @@ module "ec2_instance_ansible" {
   instance_type   = var.instance_type
   ami_id          = var.ami_id
   key_name        = module.key_pair_ansible.key_name
-  security_groups = module.security_group_ansible.security_group_name
+  security_groups = [module.security_group_ansible.security_group_name]
 }
 
 module "ec2_instance_wordpress" {
@@ -65,7 +65,7 @@ module "ec2_instance_wordpress" {
   instance_type   = var.instance_type
   ami_id          = var.ami_id
   key_name        = module.key_pair_wordpress.key_name
-  security_groups = module.security_group_wordpress.security_group_name
+  security_groups = [module.security_group_wordpress.security_group_name]
 }
 
 
