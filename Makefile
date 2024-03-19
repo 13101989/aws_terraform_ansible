@@ -3,6 +3,7 @@
 env-plan:
 	terraform init
 	terraform fmt
+	terraform validate
 	terraform plan
 
 env-up:	
