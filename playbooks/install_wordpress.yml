@@ -63,7 +63,7 @@
 
     - name: Add password to MariaDB root user
       ansible.builtin.command:
-        cmd: mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';"
+        cmd: mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '{{ mysql_root_password }}';"
       become: true
 
     - name: Create WordPress database
