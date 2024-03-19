@@ -76,5 +76,20 @@ module "volume_wordpress" {
   instance_id       = module.ec2_instance_wordpress.instance_id
 }
 
+output "user_to_ansible_private_key" {
+  value       = module.key_pair_ansible.user_to_ansible_private_key
+  sensitive   = true
+}
 
+output "ansible_to_wordpress_private_key" {
+  value       = module.key_pair_wordpress.ansible_to_wordpress_private_key
+  sensitive   = true
+}
 
+output "ansible_public_ip" {
+  value = module.ec2_instance_ansible.ansible_public_ip
+}
+
+output "wordpress_public_ip" {
+  value = module.ec2_instance_wordpress.wordpress_public_ip
+}
