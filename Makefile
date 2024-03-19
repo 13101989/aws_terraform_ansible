@@ -36,5 +36,5 @@ clean-env-files:
 	rm -rf user-to-ansible-private-key.pem ansible-to-wordpress-private-key.pem ansible.cfg inventory ssh.sh scp-ansible-config.sh
 
 clean-terraform-files:
-	rm -rf terraform
+	rm -rf .terraform
 	rm -rf .terraform.lock.hcl
