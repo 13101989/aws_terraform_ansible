@@ -4,6 +4,5 @@
 ansible.cfg
 inventory
 scp-ansible-config.sh
-ssh-to-ansible.sh
-ssh-to-wordpress.sh
+ssh-to*
 
