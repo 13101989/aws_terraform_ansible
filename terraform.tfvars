@@ -1,0 +1,7 @@
+region                        = "eu-central-1"
+ami_id                        = "ami-03cceb19496c25679"
+instance_type                 = "t2.micro"
+key_name_user_to_ansible      = "user-to-ansible-public-key"
+key_name_ansible_to_wordpress = "ansible-to-wordpress-public-key"
+ssh_access_cidr               = "0.0.0.0/0"
+web_access_cidr               = "0.0.0.0/0"

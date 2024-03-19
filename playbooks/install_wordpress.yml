@@ -1,7 +1,7 @@
 ---
 - name: Deploy WordPress with MariaDB
   hosts: all
-  become: yes
+  become: true
   vars:
     mysql_root_password: "root"  # sudo mysql_secure_installation on wordpress instance before
     wordpress_db_name: "wordpress"
