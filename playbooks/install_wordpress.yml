@@ -3,7 +3,7 @@
   hosts: all
   become: true
   vars:
-    mysql_root_password: "root"  # sudo mysql_secure_installation on wordpress instance before
+    mysql_root_password: "root"  # sudo mysql_secure_installation on wordpress instance before with Y to all
     wordpress_db_name: "wordpress"
     wordpress_db_user: "wordpressuser"
     wordpress_db_password: "your_db_password"
@@ -61,7 +61,31 @@
         name: pymysql
         executable: pip3
 
-    - name: Secure MariaDB installation
+    - name: Switch to unix_socket authentication
+      command: mysql -u root -p"{{ mysql_root_password }}" -e "UPDATE mysql.user SET plugin = 'unix_socket' WHERE User = 'root';"
+      become: true
+
+    - name: Remove anonymous users
+      mysql_user:
+        name: ''
+        host_all: yes
+        state: absent
+      become: true
+
+    - name: Disallow root login remotely
+      mysql_user:
+        name: root
+        host_all: yes
+        state: absent
+      become: true
+
+    - name: Remove test database
+      mysql_db:
+        name: test
+        state: absent
+      become: true
+
+    - name: Change root password for MariaDB
       mysql_user:
         login_user: root
         login_password: "{{ mysql_root_password }}"
@@ -70,6 +94,10 @@
         host_all: yes
         check_implicit_admin: yes
         state: present
+
+    - name: Reload privilege tables
+      command: mysql -u root -p"{{ mysql_root_password }}" -e "FLUSH PRIVILEGES;"
+      become: true
 
     - name: Create WordPress database
       mysql_db:
